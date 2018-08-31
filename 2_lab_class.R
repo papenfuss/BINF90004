@@ -3,7 +3,7 @@
 #' 
 #' Author: Tony Papenfuss
 #' ----------------------
-#' Date: Friday 1st September 2017
+#' Date: Friday 31st August 2018
 #' -----------------------------
 #' 
 #' The data you will be looking at was collected from a patient who died 
@@ -19,28 +19,25 @@
 #' samples as a phylogenetic tree.
 #' 
 #' #' The code for this workshop is available here:
-#' http://bioinf.wehi.edu.au/~papenfuss/BINF90004/
+#' http://github.com/papenfuss/BINF90004/
 #'
 #' The html version of this document is available here: 
-#' http://bioinf.wehi.edu.au/~papenfuss/BINF90004/lab_class.html
+#' http://github.com/papenfuss/BINF90004/lab_class.html
 #'
-#' Before starting you need to run http://bioinf.wehi.edu.au/~papenfuss/BINF90004/setup.R
+#' Before starting you need to run http://github.com/papenfuss/BINF90004/setup.R
 #' 
 #' To pre-process these samples:
 #' 1. The raw sequencing data was aligned to the human reference genome (hg19) using bwa mem.
 #'
-#' 2. Pileup files were generated using samtools, e.g. 
+#' 2. Pileup files were generated using samtools, e.g. for the normal
 #' samtools mpileup −f hg19.fasta −Q 20 normal.bam | gzip > normal.pileup.gz
 #'
 #' 3. The GC profile was summarised from the reference genome, e.g.
 #' sequenza−utils.py GC−windows −w 50 hg19.fa | gzip > hg19.gc50Base.txt.gz
 #'
-#' 4. Finally, sequenza seqz files were generated, e.g.
+#' 4. Finally, sequenza seqz files were generated, e.g. for one tumour sample
 #' sequenza−utils.py pileup2seqz −gc hg19.gc50Base.txt.gz −n normal.pileup.gz −t tumor.pileup.gz | gzip > out.seqz.gz
 #'
-
-#' Edit this line to get into the right directory
-setwd("~/BINF90004")
 
 #' Load the required R libraries. setup.R installs these if necessary, so make sure you ran that.
 library(copynumber)
@@ -48,8 +45,8 @@ library(sequenza)
 library(stringr)
 
 #' A bit more setup...
-dir.create("./output", showWarnings = TRUE, recursive = FALSE, mode = "0777")
-cur.path <- getwd()
+#' Edit this line to get into the right directory
+setwd("~/tmp/BINF90004")
 
 input.files <- list.files(path="./data", full.names=TRUE)
 input.files
@@ -69,8 +66,12 @@ plot(depth.tumor~x, dat.1, pch=20, cex=0.3, xlab="Position (Mb)", ylab="Counts",
 #' The germline sequencing depth looks like this:
 plot(depth.normal~x, dat.1, pch=20, cex=0.3, xlab="Position (Mb)", ylab="Counts", main="Germline sequencing depth")
 
+#' The depth ratio of these looks like this:
+plot(log2(depth.ratio)~x, dat.1, pch=20, cex=0.3, xlab="Position (Mb)", ylab="log2(R)", main="Tumour/normal depth ratio")
+
 #' If we compare the sequencing depths with the genomic GC, we see there is a strong bias.
 plot(depth.normal~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="Counts", main="GC bias")
+plot(log2(depth.normal)~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="log2(Counts)", main="GC bias")
 
 #' This is still present after normalising using the germline sample.
 plot(log2(depth.ratio)~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="log2(R)", main="GC bias")
