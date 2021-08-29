@@ -1,2 +1,4 @@
 # BINF90004
-Case studies in Bioinformatics
+Case Studies in Bioinformatics
+
+Tumour heterogeneity and evolution prac class
