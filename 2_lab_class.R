@@ -3,12 +3,12 @@
 #' 
 #' Author: Tony Papenfuss
 #' ----------------------
-#' Date: Friday 31st August 2018
+#' Date: Monday 30th August 2021
 #' -----------------------------
 #' 
 #' The data you will be looking at was collected from a patient who died 
 #' from advanced melanoma. The primary tumour was obtained from an archival 
-#' Formalin Fixed Parafin Embedded block. Multiple cores from the primary tumour 
+#' Formalin Fixed Paraffin Embedded block. Multiple cores from the primary tumour 
 #' were sequenced. Multiple samples from distant metastases were collected 
 #' during autopsy and underwent whole exome sequencing. Two cores from the 
 #' primary and two from liver metastases have been processed
@@ -24,7 +24,7 @@
 #' The html version of this document is available here: 
 #' http://github.com/papenfuss/BINF90004/lab_class.html
 #'
-#' Before starting you need to run http://github.com/papenfuss/BINF90004/setup.R
+#' Before starting you need to run http://github.com/papenfuss/BINF90004/1_setup.R
 #' 
 #' To pre-process these samples:
 #' 1. The raw sequencing data was aligned to the human reference genome (hg19) using bwa mem.
@@ -45,8 +45,8 @@ library(sequenza)
 library(stringr)
 
 #' A bit more setup...
-#' Edit this line to get into the right directory
-setwd("~/tmp/BINF90004")
+#' NB: Edit this line to get into the right directory
+setwd("~/BINF90004")
 
 input.files <- list.files(path="./data", full.names=TRUE)
 input.files
@@ -72,6 +72,7 @@ plot(log2(depth.ratio)~x, dat.1, pch=20, cex=0.3, xlab="Position (Mb)", ylab="lo
 #' If we compare the sequencing depths with the genomic GC, we see there is a strong bias.
 plot(depth.normal~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="Counts", main="GC bias")
 plot(log2(depth.normal)~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="log2(Counts)", main="GC bias")
+plot(log2(depth.tumor)~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="log2(Counts)", main="GC bias")
 
 #' This is still present after normalising using the germline sample.
 plot(log2(depth.ratio)~GC.percent, dat.1, pch=20, cex=0.3, xlab="%GC", ylab="log2(R)", main="GC bias")
